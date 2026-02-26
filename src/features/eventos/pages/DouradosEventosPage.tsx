@@ -184,7 +184,7 @@ ${ev.desc}`,
         >
           Turismo
         </Button>
-        <Button
+        {/* <Button
           role="tab"
           aria-selected={tab === "cidades"}
           aria-controls="painel-cidades"
@@ -193,7 +193,7 @@ ${ev.desc}`,
           onClick={() => setTab("cidades")}
         >
           Cidades
-        </Button>
+        </Button> */}
       </div>
 
       {/* painéis */}
@@ -250,7 +250,7 @@ ${ev.desc}`,
         </section>
       )}
 
-      {tab === "cidades" && (
+      {/* {tab === "cidades" && (
         <section
           id="painel-cidades"
           role="tabpanel"
@@ -267,7 +267,8 @@ ${ev.desc}`,
             onExcluirCidade={handleExcluirCidade}
           />
         </section>
-      )}
+      )} */}
+      
       {/* modais */}
       <EventFormModal
         open={!!eventoEdit}
