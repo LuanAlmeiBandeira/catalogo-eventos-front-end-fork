@@ -59,7 +59,7 @@ export function RoundedSelect({
     return () => document.removeEventListener("keydown", onDocKeyDown);
   }, [open]);
 
-  const enabledOptions = options.filter((o) => !o.disabled);
+  // const enabledOptions = options.filter((o) => !o.disabled);
 
   function openMenu() {
     if (disabled) return;

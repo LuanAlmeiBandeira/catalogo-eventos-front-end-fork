@@ -1,25 +1,7 @@
 import { useMemo, useState } from "react";
 import { useAppData } from "../context/appDataContext";
-import type { Cidade, PontoTuristico } from "../domain";
 import { Button, Card, TextField } from "../shared/ui";
 import { RoundedSelect } from "../shared/ui/RoundedSelect";
-
-interface TourismSectionProps {
-  cidades: Cidade[];
-  cidadeSelecionada: Cidade | null;
-  cidadeSelecionadaId: string | null;
-  onCidadeSelecionadaChange: (id: string | null) => void;
-
-  buscaPonto: string;
-  onBuscaPontoChange: (value: string) => void;
-  pontosFiltrados: PontoTuristico[];
-
-  onNovoPonto: () => void;
-  onEditarCidade: (cidade: Cidade) => void;
-  onEditarPonto: (ponto: PontoTuristico) => void;
-  onExcluirPonto: (pontoId: string) => void;
-  onIrParaCidades: () => void;
-}
 
 const TourismPage: React.FC = () => {
   const {
@@ -27,9 +9,6 @@ const TourismPage: React.FC = () => {
   } = useAppData();
 
   const [buscaPonto, setBuscaPonto] = useState("");
-  const [pontoEdit, setPontoEdit] = useState<PontoTuristico | null>(null);
-  const [pontoCidadeId, setPontoCidadeId] = useState<string | null>(null);
-  const [cidadeEdit, setCidadeEdit] = useState<Cidade | null>(null);
 
   const [cidadeSelecionadaId, setCidadeSelecionadaId] = useState<string | null>(
     () => cidades[0]?.id ?? null,
@@ -45,15 +24,6 @@ const TourismPage: React.FC = () => {
       `${p.nome} ${p.tipo}`.toLowerCase().includes(q),
     );
   }, [buscaPonto, cidadeSelecionada]);
-
-  const onNovoPonto = () => {
-    if (!cidadeSelecionada) {
-      window.alert("Selecione uma cidade primeiro.");
-      return;
-    }
-    setPontoCidadeId(cidadeSelecionada.id);
-    setPontoEdit({} as PontoTuristico);
-  };
 
   return (
     <section
@@ -117,7 +87,7 @@ const TourismPage: React.FC = () => {
                   <p className="text-xs text-[#9fb0c8]">
                     Horário: {p.horario || "—"}
                   </p>
-                  <Button variant="primary" size="lg" onClick={() => setPontoEdit(p)}>
+                  <Button variant="primary" size="lg" onClick={() => {}}>
                     Ver detalhes
                   </Button>
                 </div>
