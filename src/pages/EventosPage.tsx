@@ -3,9 +3,11 @@ import { useAppData } from "../context/appDataContext";
 import type { Evento } from "../domain";
 import { Button, Card, Tag, TextField } from "../shared/ui";
 import { RoundedSelect } from "../shared/ui/RoundedSelect";
+import { useNavigate } from "react-router-dom";
 
 const EventosPage = () => {
 
+  const navigate = useNavigate();
   const {
       state: { cidades },
     } = useAppData();
@@ -34,6 +36,7 @@ const EventosPage = () => {
         >
           {/* esquerda: filtros + lista */}
           <div className="lg:col-span-2 flex flex-col gap-4">
+            <h1 className="text-3xl font-bold mb-4">{`Eventos em ${cidadeSelecionada?.nome}`}</h1>
             <Card className="w-full p-4">
               <div className="w-full flex flex-col md:flex-row gap-3 items-start md:items-center">
                 <RoundedSelect
@@ -91,7 +94,7 @@ const EventosPage = () => {
                       <Tag variant="default">Horário: {e.hora || "—"}</Tag>
                       <Tag variant="default">local: {e.local || "—"}</Tag>
                       </div>
-                      <Button variant="primary" size="lg" onClick={() => {}}>
+                      <Button variant="primary" size="lg" onClick={() => navigate(`/eventos/${e.id}`)}>
                         Ver detalhes
                       </Button>
                     </div>
