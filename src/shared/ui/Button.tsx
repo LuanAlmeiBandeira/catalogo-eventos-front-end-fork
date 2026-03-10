@@ -1,63 +1,62 @@
-// src/shared/ui/Button.tsx
-import type { ButtonHTMLAttributes, PropsWithChildren } from 'react';
-import {
-  forwardRef,
-} from "react";
+import type { ButtonHTMLAttributes, ReactElement, ReactNode } from "react";
+import { cn } from "./cn";
 
-type Variant = "primary" | "secondary" | "danger" | "ghost";
-type Size = "sm" | "md" | "lg";
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "accent";
+export type ButtonSize = "sm" | "md" | "lg";
 
-export interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
-    PropsWithChildren {
-  variant?: Variant;
-  size?: Size;
+export interface IButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode;
+  variant?: ButtonVariant;
+  size?: ButtonSize;
   fullWidth?: boolean;
+  isLoading?: boolean;
 }
 
-const base =
-  "inline-flex items-center justify-center rounded-xl border text-xs font-semibold transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-950 focus:ring-[#20aa4b] disabled:opacity-60 disabled:cursor-not-allowed";
-
-const variants: Record<Variant, string> = {
+const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "border-[#48cb76]/60 bg-gradient-to-r from-[#20aa4b]/30 to-[#48cb76]/30 hover:from-[#20aa4b]/40 hover:to-[#48cb76]/40 text-[#007389]",
+    "bg-[var(--color-primary)] text-white hover:opacity-90 focus-visible:outline-[var(--color-primary)]",
   secondary:
-    "border-white/10 bg-white/10 hover:bg-white/15 text-[#607389]",
-  danger:
-    "border-red-500/50 bg-red-500/10 hover:bg-red-500/20 text-[#951d0b]",
+    "bg-[var(--color-secondary)] text-white hover:opacity-90 focus-visible:outline-[var(--color-secondary)]",
+  accent:
+    "bg-[var(--color-accent)] text-zinc-900 hover:opacity-90 focus-visible:outline-[var(--color-accent)]",
   ghost:
-    "border-transparent bg-transparent hover:bg-white/5 text-[#9e582a]",
+    "border border-zinc-300 bg-white text-zinc-800 hover:border-[var(--color-secondary)] hover:text-[var(--color-secondary)] focus-visible:outline-[var(--color-primary)]",
 };
 
-const sizes: Record<Size, string> = {
-  sm: "px-3 py-1 text-xs",
-  md: "px-4 py-2 text-sm",
-  lg: "px-5 py-3 text-sm",
+const sizeClasses: Record<ButtonSize, string> = {
+  sm: "h-9 px-3 text-sm",
+  md: "h-11 px-4 text-sm",
+  lg: "h-12 px-5 text-base",
 };
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      variant = "secondary",
-      size = "md",
-      fullWidth,
-      className = "",
-      type = "button",
-      ...rest
-    },
-    ref
-  ) => {
-    return (
-      <button
-        ref={ref}
-        type={type}
-        className={`${base} ${variants[variant]} ${sizes[size]} ${
-          fullWidth ? "w-full" : ""
-        } ${className}`}
-        {...rest}
-      />
-    );
-  }
-);
+export function Button({
+  children,
+  className,
+  variant = "primary",
+  size = "md",
+  fullWidth = false,
+  isLoading = false,
+  disabled,
+  type = "button",
+  ...rest
+}: IButtonProps): ReactElement {
+  const isDisabled: boolean = disabled || isLoading;
 
-Button.displayName = "Button";
+  return (
+    <button
+      type={type}
+      disabled={isDisabled}
+      className={cn(
+        "inline-flex items-center justify-center rounded-2xl font-semibold transition outline-none disabled:cursor-not-allowed disabled:opacity-60",
+        variantClasses[variant],
+        sizeClasses[size],
+        fullWidth && "w-full",
+        className
+      )}
+      {...rest}
+    >
+      {isLoading ? "Carregando..." : children}
+    </button>
+  );
+}

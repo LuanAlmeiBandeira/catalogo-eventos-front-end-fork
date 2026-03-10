@@ -1,20 +1,39 @@
-// src/shared/ui/Card.tsx
-import type { ElementType, PropsWithChildren } from "react";
+import type { HTMLAttributes, ReactElement, ReactNode } from "react";
+import { cn } from "./cn";
 
-interface CardProps extends PropsWithChildren {
-  as?: ElementType;
-  className?: string;
+export type CardPadding = "none" | "sm" | "md" | "lg";
+
+export interface ICardProps extends HTMLAttributes<HTMLDivElement> {
+  children: ReactNode;
+  padding?: CardPadding;
+  hoverable?: boolean;
 }
 
-export const Card: React.FC<CardProps> = ({
-  as: Tag = "div",
-  className = "",
-  ...rest
-}) => {
-  return (
-    <Tag
-      className={`rounded-2xl border border-white/10 bg-white/5 ${className}`}
-      {...rest}
-    />
-  );
+const paddingClasses: Record<CardPadding, string> = {
+  none: "",
+  sm: "p-4",
+  md: "p-5",
+  lg: "p-6",
 };
+
+export function Card({
+  children,
+  className,
+  padding = "md",
+  hoverable = false,
+  ...rest
+}: ICardProps): ReactElement {
+  return (
+    <div
+      className={cn(
+        "rounded-2xl border border-black/5 bg-white shadow-soft",
+        paddingClasses[padding],
+        hoverable && "transition hover:-translate-y-0.5 hover:shadow-md",
+        className
+      )}
+      {...rest}
+    >
+      {children}
+    </div>
+  );
+}

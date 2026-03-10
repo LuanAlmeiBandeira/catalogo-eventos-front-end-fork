@@ -1,30 +1,48 @@
-import React from "react";
-import { DouradosEventosPage } from "../features/eventos/pages/DouradosEventosPage";
-import AboutPage from "../pages/AboutPage";
-import DetailsEventsPage from "../pages/DetailsEventsPage";
-import DetailsPontoPage from "../pages/DetailsPontoPage";
-import EventosPage from "../pages/EventosPage";
-import TourismPage from "../pages/TourismPage";
-import DefaultTemplate from "../shared/templates/DefaultTemplate";
+import type { ReactElement } from "react";
+import { Navigate, useRoutes } from "react-router-dom";
+import { PublicLayout } from "@/shared/layouts/PublicLayout";
+import { HomePage } from "@/features/home/pages/HomePage";
+import { EventosPage } from "@/features/eventos-publicos/pages/EventosPage";
+import { EventoDetailsPage } from "@/features/eventos-publicos/pages/EventoDetailsPage";
+import { PontosTuristicosPage } from "@/features/pontos-publicos/pages/PontosTuristicosPage";
+import { PontoTuristicoDetailsPage } from "@/features/pontos-publicos/pages/PontoTuristicoDetailsPage";
+import { CityDetailsPage } from "@/features/cidades/pages/CityDetailsPage";
 
-export interface RouteConfig {
-  path: string;
-  element: React.ReactNode;
-  children?: RouteConfig[];
+export function AppRoutes(): ReactElement | null {
+  return useRoutes([
+    {
+      path: "/",
+      element: <PublicLayout />,
+      children: [
+        {
+          index: true,
+          element: <HomePage />,
+        },
+        {
+          path: "eventos",
+          element: <EventosPage />,
+        },
+        {
+          path: "eventos/:id",
+          element: <EventoDetailsPage />,
+        },
+        {
+          path: "pontos-turisticos",
+          element: <PontosTuristicosPage />,
+        },
+        {
+          path: "pontos-turisticos/:id",
+          element: <PontoTuristicoDetailsPage />,
+        },
+        {
+          path: "cidades/:slug",
+          element: <CityDetailsPage />,
+        },
+      ],
+    },
+    {
+      path: "*",
+      element: <Navigate to="/" replace />,
+    },
+  ]);
 }
-
-export const AppRoutes: RouteConfig[] = [
-  {
-    path: "",
-    element: <DefaultTemplate />,
-    children: [
-      { path: "/", element: <DouradosEventosPage /> },
-      { path: "/eventos", element: <EventosPage /> },
-      { path: "/sobre", element: <AboutPage /> },
-      { path: "/turismo", element: <TourismPage /> },
-      {  path: "/eventos/:id", element: <DetailsEventsPage /> },
-      { path: "/ponto-turistico/:id", element: <DetailsPontoPage /> },
-      {  path: "*", element: <div className="p-4 text-center text-sm text-[#9fb0c8]">Página não encontrada</div> },
-    ],
-  },
-];
